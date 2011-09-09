@@ -3,10 +3,17 @@ package com.coredroid.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 public class UIUtil {
 
@@ -52,4 +59,93 @@ public class UIUtil {
 			size.setHeight((int)(dim * ratio));
 		}
 	}
+
+	/**
+	 * Recursively set the font on all text views on this root
+	 */
+	public static void setFont(View view, Typeface font) {
+		
+		if (view == null) {
+			return;
+		}
+		
+		if (view instanceof ViewGroup) {
+			for (int i = 0, lim = ((ViewGroup)view).getChildCount(); i < lim; i++) {
+				setFont(((ViewGroup)view).getChildAt(i), font);
+			}
+			return;
+		}
+		
+		if (view instanceof TextView) {
+			((TextView)view).setTypeface(font);
+		}
+	}	
+
+	/**
+	 * Convenience method to show a loading dialog with message
+	 */
+	public static ProgressDialog showProgressDialog(Context context, String message) {
+		return ProgressDialog.show(context, null, message, true);
+	}
+
+	/**
+	 * Set the font on this specific view
+	 */
+	public void setFont(Context context, TextView view, String font) {
+		Typeface typeface = UIUtil.getTypeface(context, font);
+		view.setTypeface(typeface);
+	}
+
+	/**
+	 * Set the font on the specific textview with the given ID
+	 */
+	public void setFont(Activity activity, int viewId, String font) {
+		TextView view = (TextView)activity.findViewById(viewId);
+		setFont(activity, view, font);
+	}
+	
+	/**
+	 * Get the top level content panel for the activity
+	 */
+	public static View getContentPanel(Activity activity) {
+		
+		Window window = activity.getWindow();
+		if (window == null) {
+			return null;
+		}
+		
+		View view = window.getDecorView(); 
+		return view instanceof ViewGroup ? ((ViewGroup)view).getChildAt(0) : view;
+	}
+
+	public static void alert(Context context, String title, String message) {
+		new AlertDialog.Builder(context).setTitle(title).setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		}).create().show();
+	}
+	
+	/**
+	 * Show a message dialog, clicking OK executes the supplied handler
+	 */
+	public static void alert(Context context, String message, DialogInterface.OnClickListener onDismiss) {
+		// TODO: i18n 
+		new AlertDialog.Builder(context).setMessage(message).setPositiveButton("OK", onDismiss).create().show();
+	}
+
+	/**
+	 * Show a message dialog with an OK button, clicking OK kills the application
+	 */
+	public static void fail(Context context, String message) {
+		new AlertDialog.Builder(context).setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				System.exit(0);
+			}
+		}).create().show();
+	}
+	
 }
