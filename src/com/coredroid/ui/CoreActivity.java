@@ -1,10 +1,7 @@
 package com.coredroid.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -23,7 +20,17 @@ public abstract class CoreActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (hideTitlebar()) {
+        	requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+	}
+
+	/**
+	 * Allow sub classes to determine if the titlebar (or actionbar in honeycomb+) should show.  The default is true
+	 * @return
+	 */
+	protected boolean hideTitlebar() {
+		return true;
 	}
 	
 	@Override

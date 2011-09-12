@@ -18,7 +18,17 @@ public class CoreFragmentActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+		if (hideTitlebar()) {
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+		}
+	}
+	
+	/**
+	 * Allow sub classes to determine if the titlebar (or actionbar in honeycomb+) should show.  The default is true
+	 * @return
+	 */
+	protected boolean hideTitlebar() {
+		return true;
 	}
 	
 	@Override
