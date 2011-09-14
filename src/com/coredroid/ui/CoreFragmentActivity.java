@@ -93,11 +93,11 @@ public class CoreFragmentActivity extends FragmentActivity {
 	}
 	
 	protected void setVisible(int viewId, boolean visible) {
-		findViewById(viewId).setVisibility(visible ? View.VISIBLE : View.GONE);
+		findViewById(viewId).setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
 	}
 	
 	protected void setHidden(int viewId, boolean visible) {
-		findViewById(viewId).setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+		findViewById(viewId).setVisibility(visible ? View.VISIBLE : View.GONE);
 	}
 	
 	@Override
