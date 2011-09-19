@@ -6,8 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.coredroid.R;
 import com.coredroid.ui.CoreActivity;
@@ -33,7 +33,7 @@ public abstract class AppLauncher extends CoreActivity {
 		
 		setContentView(getLayout());
 		
-		((LinearLayout)findViewById(R.id.splash)).setBackgroundColor(getBackgroundColor());
+		((FrameLayout)findViewById(android.R.id.content)).setBackgroundColor(getBackgroundColor());
 
 		updateSplashImage();
 
