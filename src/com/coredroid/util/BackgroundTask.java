@@ -4,7 +4,10 @@ import android.os.Handler;
 
 public abstract class BackgroundTask {
 
-	private Handler handler;
+	protected Handler handler;
+
+	private Throwable error;
+	private String errorMessage;
 	
 	public BackgroundTask() {
 		handler = new Handler();
@@ -14,6 +17,31 @@ public abstract class BackgroundTask {
 
 	public abstract void work();
 	public abstract void done();
+
+	/**
+	 * Whether there was an error while working, typically checked in done()
+	 */
+	protected boolean failed() {
+		return error != null || errorMessage != null;
+	}
+
+	protected void fail(Throwable t) {
+		fail(t, null);
+	}
+	
+	protected void fail(Throwable t, String message) {
+		error = t;
+		errorMessage = message;
+		LogIt.e(this, t, message);
+	}
+	
+	protected Throwable getException() {
+		return error;
+	}
+	
+	protected String getExceptionMessage() {
+		return errorMessage;
+	}
 	
 	private class BackgroundThread extends Thread {
 		
@@ -22,7 +50,7 @@ public abstract class BackgroundTask {
 			try {
 				work();
 			} catch (Throwable t) {
-				LogIt.e(this, t);
+				fail(t, null);
 			}
 			
 			handler.post(new Runnable() {

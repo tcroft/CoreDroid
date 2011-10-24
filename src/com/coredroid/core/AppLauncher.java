@@ -51,8 +51,8 @@ public abstract class AppLauncher extends CoreActivity {
 				try {
 					init();
 				} catch (Throwable t) {
-					LogIt.e(this, t, "Failure to init");
-					fail("There was a problem starting the application.  Please contact the developer: " + t);
+					fail(t, "Failure to init");
+					return;
 				}
 
 				// Ensure the screen stays up long enough
@@ -69,12 +69,17 @@ public abstract class AppLauncher extends CoreActivity {
 			
 			@Override
 			public void done() {
+				if (failed()) {
+					AppLauncher.this.fail("There was a problem starting the application.  Please contact the developer: " + getException());
+					return;
+				}
+
 				Intent intent = onInitComplete();
 				if (intent != null) {
 					startActivity(intent);
 					finish();
 				} else {
-					fail("No activity specified");
+					AppLauncher.this.fail("No activity specified");
 				}
 			}
 		};

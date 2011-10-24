@@ -9,15 +9,36 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class UIUtil {
 
 	private static Map<String, Typeface> typefaceMap = new HashMap<String, Typeface>();
+
+	/**
+	 * Get the rough physical diagonal size of the device
+	 */
+	public static float getScreenInches(Activity activity) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        double dimX = metrics.widthPixels / metrics.xdpi;
+        double dimY = metrics.heightPixels / metrics.ydpi;
+        return (float)Math.sqrt(dimX*dimX + dimY*dimY);
+	}
+	
+	public static void showKeyboard(View view) {
+		InputMethodManager mgr = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		mgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+	}
 	
 	/**
 	 * Close the soft keyboard associated with this view
@@ -118,6 +139,19 @@ public class UIUtil {
 		return view instanceof ViewGroup ? ((ViewGroup)view).getChildAt(0) : view;
 	}
 
+	public static void confirm(Context context, String title, String message, DialogInterface.OnClickListener onOK) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		if (!TextUtils.isEmpty(title)) {
+			builder.setTitle(title);
+		}
+		if (!TextUtils.isEmpty(message)) {
+			builder.setMessage(message);
+		}
+		builder.setPositiveButton("OK", onOK); // TODO: make 'OK' configurable
+		builder.setNegativeButton("Cancel", null);
+		builder.create().show();
+	}
+	
 	public static void alert(Context context, String title, String message) {
 		new AlertDialog.Builder(context).setTitle(title).setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			@Override
@@ -147,5 +181,11 @@ public class UIUtil {
 			}
 		}).create().show();
 	}
-	
+
+	/**
+	 * Prevent keyboard from popping up when field gets focus
+	 */
+	public static void suppressKeyboard(EditText text) {
+		text.setInputType(InputType.TYPE_NULL);
+	}	
 }

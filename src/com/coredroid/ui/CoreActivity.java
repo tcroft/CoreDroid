@@ -2,11 +2,14 @@ package com.coredroid.ui;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.coredroid.core.CoreApplication;
@@ -24,6 +27,11 @@ public abstract class CoreActivity extends Activity {
         	requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
 	}
+	
+	public void setEnabled(int viewId, boolean enabled) {
+		findViewById(viewId).setEnabled(enabled);
+	}
+	
 
 	/**
 	 * Allow sub classes to determine if the titlebar (or actionbar in honeycomb+) should show.  The default is true
@@ -41,6 +49,14 @@ public abstract class CoreActivity extends Activity {
 			
 			initFinished = true;
 		}
+	}
+	
+	/**
+	 * 
+	 * @param activity
+	 */
+	protected void startActivity(Class<? extends Activity> activity) {
+		startActivity(new Intent(this, activity));
 	}
 
 	/**
@@ -80,6 +96,46 @@ public abstract class CoreActivity extends Activity {
 	protected String getViewText(int label) {
 		TextView view = ((TextView)findViewById(label));
 		return view != null ? view.getText().toString() : "";
+	}
+	
+	protected void setOnEnterListener(int viewId, final View.OnKeyListener listener) {
+		View view = findViewById(viewId);
+        view.setOnKeyListener(new OnKeyListener(){
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(event.getAction()==KeyEvent.ACTION_DOWN){
+					if(keyCode==KeyEvent.KEYCODE_ENTER){
+						return listener.onKey(v, keyCode, event);
+					}
+				}
+
+				return false;
+			}
+        });
+	}
+	
+    /**
+     * Looks for a CheckBox with the given id and sets the checked state
+     */
+    protected void setChecked(int viewId, boolean checked) {
+    	View view = findViewById(viewId);
+    	if (view instanceof CheckBox) {
+    		((CheckBox)view).setChecked(checked);
+    	}
+    }
+    
+    /**
+     * Given an id to a CheckBox will return if the state is checked
+     */
+    protected boolean isChecked(int viewId) {
+    	View view = findViewById(viewId);
+    	if (view instanceof CheckBox) {
+    		return ((CheckBox)view).isChecked();
+    	}
+    	return false;
+    }
+    
+	public void confirm(String title, String message, DialogInterface.OnClickListener onOK) {
+		UIUtil.confirm(this, title, message, onOK);
 	}
 	
     protected void setClickListener(int viewId, View.OnClickListener listener) {
