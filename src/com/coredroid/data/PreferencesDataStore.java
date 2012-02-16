@@ -3,6 +3,7 @@ package com.coredroid.data;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Modifier;
 import java.util.Map.Entry;
 
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences.Editor;
 import com.coredroid.core.CoreObject;
 import com.coredroid.util.LogIt;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 /**
@@ -39,7 +41,7 @@ public class PreferencesDataStore implements DataStore {
 	}
 	
 	protected Gson createGson() {
-		return new Gson();
+		return new GsonBuilder().excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE).create();
 	}
 	
 	@Override

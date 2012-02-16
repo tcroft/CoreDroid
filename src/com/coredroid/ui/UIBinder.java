@@ -3,6 +3,7 @@ package com.coredroid.ui;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class UIBinder {
 
 	private Map<String, Method> accessorMap = new HashMap<String, Method>();
 	
-	private DecimalFormat defaultNumberFormat = new DecimalFormat("##,##0.#");
+	private NumberFormat defaultNumberFormat = new DecimalFormat("##,##0.###");
 	
 	private Map<Integer, PropertyLookup> bindingMap = new HashMap<Integer, PropertyLookup>();
 	private Object model;
@@ -44,6 +45,10 @@ public class UIBinder {
 		bindingMap.put(id, new PropertyLookup(property, defaultValue));
 	}
 
+	public void setNumberFormat(NumberFormat format) {
+		defaultNumberFormat = format;
+	}
+	
 	/**
 	 * Update the underlying panel and model to apply to.  Calls bind internally
 	 */
@@ -137,6 +142,26 @@ public class UIBinder {
 		Method mutator = getMutator(model, property);
 		if (mutator != null) {
 			try {
+				
+				Class propClass = mutator.getParameterTypes()[0];
+				
+				// Convert to propert type
+				if (String.class == propClass) {
+					value = value != null ? value.toString() : null;
+				} else if (Integer.class == propClass) {
+					if (!(value instanceof Integer)) {
+						value = value != null ? Integer.parseInt(value.toString()) : null;
+					}
+				} else if (Float.class == propClass) {
+					if (!(value instanceof Float)) {
+						value = value != null ? Float.parseFloat(value.toString()) : null;
+					}
+				} else if (Boolean.class == propClass) {
+					if (!(value instanceof Boolean)) {
+						value = value != null ? Boolean.parseBoolean(value.toString()) : null;
+					}
+				}
+				
 				mutator.invoke(model, value);
 			} catch (IllegalArgumentException e) {
 				LogIt.e(this, e);

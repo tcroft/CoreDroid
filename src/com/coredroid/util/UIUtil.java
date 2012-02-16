@@ -68,16 +68,24 @@ public class UIUtil {
 			return;
 		}
 
-		int dim = Math.min(width, height);
+		double ratio = size.getWidth()/(double)size.getHeight();
 		
 		if (size.getWidth() < size.getHeight()) {
-			double ratio = size.getWidth()/(double)size.getHeight(); 
-			size.setHeight(dim);
-			size.setWidth((int)(dim * ratio));
+			size.setHeight(height);
+			size.setWidth((int)(height * ratio));
+			
+			if (size.getWidth() > width) {
+				size.setWidth(width);
+				size.setHeight((int)(width/ratio));
+			}
 		} else {
-			double ratio = size.getHeight()/(double)size.getWidth();
-			size.setWidth(dim);
-			size.setHeight((int)(dim * ratio));
+			size.setWidth(width);
+			size.setHeight((int)(width / ratio));
+			
+			if (size.getHeight() > height) {
+				size.setHeight(height);
+				size.setWidth((int)(height*ratio));
+			}
 		}
 	}
 
@@ -152,6 +160,19 @@ public class UIUtil {
 		builder.create().show();
 	}
 	
+	public static void confirmYesNo(Context context, String title, String message, DialogInterface.OnClickListener onYes, DialogInterface.OnClickListener onNo) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		if (!TextUtils.isEmpty(title)) {
+			builder.setTitle(title);
+		}
+		if (!TextUtils.isEmpty(message)) {
+			builder.setMessage(message);
+		}
+		builder.setPositiveButton("Yes", onYes);
+		builder.setNegativeButton("No", onNo);
+		builder.create().show();
+	}
+
 	public static void alert(Context context, String title, String message) {
 		new AlertDialog.Builder(context).setTitle(title).setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			@Override
@@ -167,6 +188,14 @@ public class UIUtil {
 	public static void alert(Context context, String message, DialogInterface.OnClickListener onDismiss) {
 		// TODO: i18n 
 		new AlertDialog.Builder(context).setMessage(message).setPositiveButton("OK", onDismiss).create().show();
+	}
+
+	/**
+	 * Show a message dialog, clicking OK executes the supplied handler
+	 */
+	public static void alert(Context context, String title, String message, DialogInterface.OnClickListener onDismiss) {
+		// TODO: i18n 
+		new AlertDialog.Builder(context).setTitle(title).setMessage(message).setPositiveButton("OK", onDismiss).create().show();
 	}
 
 	/**

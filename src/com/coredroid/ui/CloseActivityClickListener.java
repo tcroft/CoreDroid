@@ -1,13 +1,13 @@
 package com.coredroid.ui;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 /**
  * Simple click listener that calls finish()
  */
-public class CloseActivityClickListener implements OnClickListener {
+public class CloseActivityClickListener implements View.OnClickListener, DialogInterface.OnClickListener {
 
 	private Activity activity;
 	
@@ -20,4 +20,9 @@ public class CloseActivityClickListener implements OnClickListener {
 		activity.finish();
 	}
 
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		activity.finish();
+	}
+	
 }

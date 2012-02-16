@@ -4,4 +4,5 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:id="@+id/splash">
     <ImageView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/splashImage" android:scaleType="fitCenter"></ImageView>
+	<EditText android:id="@+id/focusHack" android:layout_height="1dip" android:layout_width="1dip" android:background="@android:color/transparent" android:cursorVisible="false"></EditText>
 </LinearLayout>

@@ -14,11 +14,11 @@ public abstract class EnterKeyListener implements OnKeyListener {
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-			onEnterKey(v);
+			return onEnterKey(v);
 		}
 
 		return false;
 	}
 
-	protected abstract void onEnterKey(View v);
+	protected abstract boolean onEnterKey(View v);
 }

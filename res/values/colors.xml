@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Action Bar -->
+	<color name="actionbar_topColor">#9EC2D0</color>
+	<color name="actionbar_topMidColor">#659BB2</color>
+	<color name="actionbar_bottomMidColor">#5B95AE</color>
+	<color name="actionbar_bottomColor">#3E7793</color>
+</resources>

@@ -15,11 +15,7 @@ public class SafeJSONObject {
 	}
 
 	public String getString(String key) {
-		try {
-			return obj.has(key) ? obj.getString(key) : null;
-		} catch (JSONException e) {
-			return null;
-		}
+		return getString(key, null);
 	}
 
 	public String getString(String key, String defaultValue) {
@@ -30,12 +26,20 @@ public class SafeJSONObject {
 		}
 	}
 
-	public int getInt(String key) {
+	public float getFloat(String key) {
+		return getFloat(key, 0);
+	}
+	
+	public float getFloat(String key, float defaultValue) {
 		try {
-			return obj.has(key) ? obj.getInt(key) : 0;
+			return obj.has(key) ? (float)obj.getDouble(key) : defaultValue;
 		} catch (JSONException e) {
-			return 0;
+			return defaultValue;
 		}
+	}
+	
+	public int getInt(String key) {
+		return getInt(key, 0);
 	}
 
 	public int getInt(String key, int defaultValue) {
@@ -53,5 +57,13 @@ public class SafeJSONObject {
 			return null;
 		}
 		
+	}
+	
+	public boolean getBool(String key) {
+		try {
+			return obj.has(key) ? obj.getBoolean(key) : false;
+		} catch (JSONException e) {
+			return false;
+		}
 	}
 }

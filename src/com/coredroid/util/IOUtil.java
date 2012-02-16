@@ -28,4 +28,17 @@ public class IOUtil {
 		}
 	}
 	
+    public static void copyAndClose(InputStream in, OutputStream out) throws IOException {
+    	try {
+    		copy(in,out);
+    	} finally {
+    		if (in != null) {
+    			in.close();
+    		}
+    		
+    		if (out != null) {
+    			out.close();
+    		}
+    	}
+    }
 }

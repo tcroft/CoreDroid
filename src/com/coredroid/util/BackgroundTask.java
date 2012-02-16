@@ -24,6 +24,10 @@ public abstract class BackgroundTask {
 	protected boolean failed() {
 		return error != null || errorMessage != null;
 	}
+	
+	protected void fail(String message) {
+		fail(null, message);
+	}
 
 	protected void fail(Throwable t) {
 		fail(t, null);
@@ -40,7 +44,17 @@ public abstract class BackgroundTask {
 	}
 	
 	protected String getExceptionMessage() {
-		return errorMessage;
+		StringBuilder builder = new StringBuilder();
+		if (!StringUtil.isEmpty(errorMessage)) {
+			builder.append(errorMessage);
+		}
+		if (error != null) {
+			if (builder.length() > 0) {
+				builder.append(": ");
+			}
+			builder.append(error.toString());
+		}
+		return builder.toString();
 	}
 	
 	private class BackgroundThread extends Thread {

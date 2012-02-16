@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent" android:layout_height="50dip" android:id="@+id/actionBar">
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:text="Page Title" android:id="@+id/pageTitle" android:textStyle="bold" android:textColor="#fff" android:shadowRadius="2" android:shadowColor="#000" android:shadowDy="-1" android:textSize="10pt"></TextView>
+    <View android:id="@+id/hrule" android:layout_alignParentBottom="true" android:layout_width="fill_parent" android:layout_height="1dip" android:background="#2f4a59"></View>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentLeft="true" android:layout_marginLeft="5dip" android:id="@+id/leftButtonBar"></LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:layout_marginRight="5dip" android:id="@+id/rightButtonBar"></LinearLayout>
+  
+  
+    
+</RelativeLayout>

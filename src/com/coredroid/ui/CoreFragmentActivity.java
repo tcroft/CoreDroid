@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CoreFragmentActivity extends FragmentActivity {
 
@@ -41,6 +42,28 @@ public class CoreFragmentActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * Show a short lengthed toast
+	 */
+	protected void toast(int stringId) {
+		toast(getString(stringId), Toast.LENGTH_SHORT);
+	}
+	
+	protected void toast(int stringId, int duration) {
+		toast(getString(stringId), duration);
+	}
+
+	/**
+	 * Show a short lengthed toast
+	 */
+	protected void toast(String string) {
+		toast(string, Toast.LENGTH_SHORT);
+	}
+
+	protected void toast(String string, int duration) {
+		Toast.makeText(this, string, duration).show();
+	}
+	
 	/**
 	 * Sets the font on all text views for the current activity
 	 */

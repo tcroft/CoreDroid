@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
 
 public class SoundUtil {
 
@@ -13,6 +14,13 @@ public class SoundUtil {
 		MediaPlayer player = soundPoolMap.get(sound);
 		if (player == null) {
 			player = MediaPlayer.create(context, sound);
+			player.setOnErrorListener(new OnErrorListener() {
+				
+				@Override
+				public boolean onError(MediaPlayer mp, int what, int extra) {
+					return false;
+				}
+			});
 			soundPoolMap.put(sound, player);
 		}
 	}
@@ -21,7 +29,7 @@ public class SoundUtil {
 		MediaPlayer player = soundPoolMap.get(sound);
 		if (player != null) {
 			if (!player.isPlaying()) {
-				player.setVolume(1, 1);
+//				player.setVolume(1, 1);
 				player.start();
 			} else {
 				player.seekTo(0);

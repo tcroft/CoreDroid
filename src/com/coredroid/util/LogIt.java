@@ -6,13 +6,19 @@ public class LogIt {
 
 	public static void e(Object src, Throwable t, Object... message) {
 		StringBuilder builder = new StringBuilder();
-		builder.append(t.getMessage());
+		if (t != null) {
+			builder.append(t.getMessage()).append(": ");
+		} else {
+			builder.append("ERROR: ");
+		}
 		for (Object o : message) {
 			builder.append(o).append(", ");
 		}
+
 		Class c = src instanceof Class ? (Class) src : src.getClass();
 		Log.e(c.getName(), builder.toString(), t);
 	}
+	
 	public static void d(Object src, Object... message) {
 //		if (!Log.isLoggable(src.getClass().getSimpleName(), Log.DEBUG)) {
 //			return;

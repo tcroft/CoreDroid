@@ -10,9 +10,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.coredroid.R;
+import com.coredroid.ui.CloseActivityClickListener;
 import com.coredroid.ui.CoreActivity;
 import com.coredroid.util.BackgroundTask;
-import com.coredroid.util.LogIt;
 
 /**
  * Show a splash image for a brief time while the application is initialized.
@@ -50,6 +50,8 @@ public abstract class AppLauncher extends CoreActivity {
 				// App specific initialization
 				try {
 					init();
+				} catch (InitializationException e) {
+					fail(null, e.getMessage());
 				} catch (Throwable t) {
 					fail(t, "Failure to init");
 					return;
@@ -70,7 +72,7 @@ public abstract class AppLauncher extends CoreActivity {
 			@Override
 			public void done() {
 				if (failed()) {
-					AppLauncher.this.fail("There was a problem starting the application.  Please contact the developer: " + getException());
+					alert(getExceptionMessage(), new CloseActivityClickListener(AppLauncher.this));
 					return;
 				}
 
@@ -105,7 +107,9 @@ public abstract class AppLauncher extends CoreActivity {
 	protected void updateSplashImage() {
 		Display display = getWindowManager().getDefaultDisplay();
 		int id = display.getHeight() > display.getWidth() ? getPortraitSplashResource() : getLandscapeSplashResource(); 
-		((ImageView)findViewById(R.id.splashImage)).setImageResource(id);
+		if (id >= 0) {
+			((ImageView)findViewById(R.id.splashImage)).setImageResource(id);
+		}
 	}
 	
 	/**

@@ -9,7 +9,8 @@ import com.coredroid.util.UIUtil;
  */
 public class HideKeyboardListener extends EnterKeyListener {
 
-	protected void onEnterKey(View v) {
+	protected boolean onEnterKey(View v) {
 		UIUtil.hideKeyboard(v);
+		return true;
 	}
 }
